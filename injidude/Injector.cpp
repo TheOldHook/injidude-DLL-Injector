@@ -80,7 +80,31 @@ std::string OpenFileDialog() {
     return "";
 }
 
+
+void PrintIntro() {
+    // ANSI escape code for orange color (ANSI 38;5;214 represents a close approximation to orange)
+    const std::string orange = "\033[38;5;214m";
+    // ANSI escape code to reset color
+    const std::string reset = "\033[0m";
+
+    std::cout << orange
+        << " ______                        __              __            \n"
+        << "/\\__  _\\            __  __    /\\ \\            /\\ \\           \n"
+        << "\\/_/\\ \\/     ___   /\\_\\/\\_\\   \\_\\ \\  __  __   \\_\\ \\     __   \n"
+        << "   \\ \\ \\   /' _ `\\ \\/\\ \\/\\ \\  /'_` \\/\\ \\/\\ \\  /'_` \\  /'__`\\ \n"
+        << "    \\_\\ \\__/\\ \\/\\ \\ \\ \\ \\ \\ \\/\\ \\L\\ \\ \\ \\_\\ \\/\\ \\L\\ \\/\\  __/ \n"
+        << "    /\\_____\\ \\_\\ \\_\\_\\ \\ \\ \\_\\ \\___,_\\ \\____/\\ \\___,_\\ \\____\\\n"
+        << "    \\/_____/\\/_/\\/_/\\ \\_\\ \\/_/\\/__/,_ /\\/___/  \\/__,_ /\\/____/\n"
+        << "                   \\ \\____/ Created by ya boy wehouse         \n"
+        << "                    \\/___/                                    \n"
+        << reset;  // Reset color to default
+}
+
 int main() {
+
+    PrintIntro();  // Call the function to print the intro
+
+
     // Prompt user for process name
     std::wcout << L"Enter the target process name (e.g., TargetGame.exe): ";
     std::wstring processName;
@@ -98,15 +122,18 @@ int main() {
     DWORD processID = GetProcessID(processName.c_str());
 
     if (processID == 0) {
-        std::cerr << "Failed to find process ID." << std::endl;
+        std::cerr << "Failed to find process ID, check your shit dude." << std::endl;
+        std::cin.get();
         return 1;
     }
 
     if (InjectDLL(processID, dllPath.c_str())) {
         std::cout << "DLL injected successfully!" << std::endl;
+        std::cin.get();
     }
     else {
         std::cerr << "DLL injection failed." << std::endl;
+        std::cin.get();
     }
 
     // Wait for user input before closing the terminal
